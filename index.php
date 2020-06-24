@@ -35,6 +35,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
     <link rel="stylesheet" href="dist/css/simple-lineicon/simple-line-icons.css">
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -68,9 +69,9 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                                     <div class="pull-left user-img"><img src="dist/img/u2.png" class="img-responsive img-circle" alt="User"></div>
                                     <p class="text-left">Admin <small>alexander@gmail.com</small> </p>
                                 </li>
-                                <li><a href="#"><i class="icon-profile-male"></i> My Profile</a></li>
+                                <li><a href="index.php?page=userEdit"><i class="icon-profile-male"></i> My Profile</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#"><i class="icon-gears"></i> Account Setting</a></li>
+                                <li><a href="index.php?page=userKelola"><i class="icon-gears"></i> Account Setting</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
                             </ul>
@@ -164,7 +165,6 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
 
     <!-- for demo purposes -->
     <script src="dist/js/demo.js"></script>
-
 </body>
 
 <!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-blank.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 09 May 2019 00:06:57 GMT -->

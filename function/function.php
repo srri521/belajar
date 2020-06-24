@@ -168,6 +168,61 @@ function queryAddPembayaran($data) {
 
 
 
+function editUser($data){
+    global $conn;
+    $id=$data["id"];
+    $email=htmlspecialchars($data["email"]);
+    $password=htmlspecialchars($data["password"]);
+    $password2=htmlspecialchars($data["password2"]);
+    $role=htmlspecialchars($data["role"]);
+
+    $result=mysqli_query($conn, "SELECT * FROM user WHERE id='$id'");
+    if(mysqli_num_rows($result)===1)
+    {
+         //query insert data
+        $row=mysqli_fetch_assoc($result);
+        
+        if(password_verify($password,$row["password"]) ){
+            $password2= password_hash($password2,PASSWORD_DEFAULT);
+            $query="UPDATE user SET
+            email='$email',
+            password='$password2',
+            role='$role',
+            WHERE id=$id
+            ";
+            
+            mysqli_query($conn, $query);
+        }
+
+    }else{
+        echo "
+        <script>
+            alert('Password lama yang anda masukan salah');
+        </script>
+        ";
+    }
+
+    
+    return mysqli_affected_rows($conn);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

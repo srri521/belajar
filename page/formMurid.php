@@ -28,9 +28,6 @@ if ( isset($_POST["submit"]) ) {
 
 
 
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,14 +66,10 @@ if ( isset($_POST["submit"]) ) {
                     <td><?= $row["jenjang"];?>, mengikuti kelas <?= $row["kursus"];?></td>
                     
                     <td>
-                        <a href="index.php?page=editAnggota&id_anggota=<?= $row["id_anggota"];?>">
-                            <button type="submit" class="btn btn-success btn-sm">edit</button>
-                        </a>
-
-                        <a href="function/hapusMurid.php?id=<?= $row["id"]?>&id_user=<?= $id_user;?>" onclick="return confirm('yakin mau menghapus data?')">
+                        <a href="function/hapusMurid.php?id=<?= $row["id"];?>" onclick="return confirm('yakin mau menghapus data?')">
                             <button class="btn btn-danger btn-sm">hapus</button>
                         </a>
-                        <a href="index.php?page=tampilAnggota&id_anggota=<?= $row["id_anggota"];?>">
+                        <a href="index.php?page=formMuridTampil&id=<?= $row["id"];?>">
                             <button type="submit" class="btn btn-primary btn-sm">detail</button>
                         </a>
                     </td>    
@@ -97,24 +90,6 @@ if ( isset($_POST["submit"]) ) {
     
     </div><!--End content-wrapper-->
    <!--Start Back To Top Button-->
-    
-    <script>
-     $(document).ready(function() {
-      //Default data table
-       $('#default-datatable').DataTable();
-
-
-       var table = $('#example').DataTable( {
-        lengthChange: false,
-        buttons: [ 'copy', 'excel', 'pdf', 'print', 'colvis' ]
-      } );
- 
-     table.buttons().container()
-        .appendTo( '#example_wrapper .col-md-6:eq(0)' );
-      
-      } );
-
-    </script>
     
 </body>
 

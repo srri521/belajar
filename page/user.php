@@ -62,11 +62,11 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <!-- User Account  -->
-                        <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="dist/img/u2.png" class="user-image" alt="User Image"> <span class="hidden-xs">Admin</span> </a>
+                        <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="dist/img/u2.png" class="user-image" alt="User Image"> <span class="hidden-xs">User</span> </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header">
                                     <div class="pull-left user-img"><img src="dist/img/u2.png" class="img-responsive img-circle" alt="User"></div>
-                                    <p class="text-left">Admin <small>alexander@gmail.com</small> </p>
+                                    <p class="text-left">User <small>alexander@gmail.com</small> </p>
                                 </li>
                                 <li><a href="#"><i class="icon-profile-male"></i> My Profile</a></li>
                                 <li role="separator" class="divider"></li>
@@ -89,7 +89,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                 <div class="user-panel">
                     <div class="image text-center"><img src="dist/img/u2.png" class="img-circle" alt="User Image"> </div>
                     <div class="info">
-                        <p>Admin</p>
+                        <p>User</p>
                         <a href="#"><i class="fa fa-gear"></i></a> <a href="#"><i class="fa fa-power-off"></i></a>
                     </div>
                 </div>
@@ -98,11 +98,9 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">PERSONAL</li>
 
-                    <li > <a href="index.php?page=formDashboard"> <i class="icon-home"></i> <span>Dashboard</span> <span class="pull-right-container"></i> </span> </a>
+                    <li > <a href="user.php?page=formDashboardUser"> <i class="icon-home"></i> <span>Dashboard</span> <span class="pull-right-container"></i> </span> </a>
                     </li>
-                    <li > <a href="index.php?page=formMurid"> <i class="icon-people icons"></i> <span>Pengelolaan Murid</span> <span class="pull-right-container"> </span> </a>
-                    </li>
-                    <li > <a href="index.php?page=formPembayaran"> <i class="icon-book-open icons"></i> <span>Data Pembayaran</span> <span class="pull-right-container"> </i> </span> </a>
+                    <li > <a href="user.php?page=formTransaksi"> <i class="icon-people icons"></i> <span>Transaksi Pembayaran</span> <span class="pull-right-container"> </span> </a>
                     </li>
                 </ul>
             </div>
