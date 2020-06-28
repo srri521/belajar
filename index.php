@@ -68,12 +68,12 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                                 <li class="user-header">
                                     <div class="pull-left user-img"><img src="dist/img/u2.png" class="img-responsive img-circle" alt="User"></div>
                                     <p class="text-left">Admin <small>alexander@gmail.com</small> </p>
-                                </li>
+                                 </li>
                                 <li><a href="index.php?page=userEdit"><i class="icon-profile-male"></i> My Profile</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="index.php?page=userKelola"><i class="icon-gears"></i> Account Setting</a></li>
+                                <li><a href="index.php?page=accountsetting"><i class="icon-gears"></i> Account Setting</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+                                <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout</a></li>
                             </ul>
                         </li>
                         <!-- Control Sidebar Toggle Button -->

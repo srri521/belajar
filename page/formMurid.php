@@ -66,10 +66,13 @@ if ( isset($_POST["submit"]) ) {
                     <td><?= $row["jenjang"];?>, mengikuti kelas <?= $row["kursus"];?></td>
                     
                     <td>
-                        <a href="function/hapusMurid.php?id=<?= $row["id"];?>" onclick="return confirm('yakin mau menghapus data?')">
+                        <a href="function/hapusMurid.php?id_murid=<?= $row["id_murid"];?>" onclick="return confirm('yakin mau menghapus data?')">
                             <button class="btn btn-danger btn-sm">hapus</button>
                         </a>
-                        <a href="index.php?page=formMuridTampil&id=<?= $row["id"];?>">
+                        <a href="index.php?page=editMurid&id_murid=<?= $row["id_murid"];?>">
+                            <button class="btn btn-success btn-sm">edit</button>
+                        </a>
+                        <a href="index.php?page=formMuridTampil&id_murid=<?= $row["id_murid"];?>">
                             <button type="submit" class="btn btn-primary btn-sm">detail</button>
                         </a>
                     </td>    

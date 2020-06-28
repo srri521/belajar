@@ -1,5 +1,5 @@
 <?php 
-$id=$_GET["id"];
+$id_murid=$_GET["id_murid"];
 // if($_SESSION["login"]==0){
 //     echo "
 //     <script>
@@ -8,7 +8,7 @@ $id=$_GET["id"];
 //     ";
 // }
 //query murid berdasarkan id
-$murid2=query("SELECT * FROM murid WHERE id=$id")[0];
+$murid2=query("SELECT * FROM murid WHERE id_murid=$id_murid")[0];
 ?>
 
 <a href="index.php?page=formMurid">
@@ -44,7 +44,7 @@ $murid2=query("SELECT * FROM murid WHERE id=$id")[0];
                         <thead>
                             <tr>
                                 <th scope="row">ID</th>
-                                <td scope="row"><?= $murid2["id"];?></td>
+                                <td scope="row"><?= $murid2["id_murid"];?></td>
                             </tr>
                         </thead>
                         <tbody> 

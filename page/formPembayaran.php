@@ -1,10 +1,10 @@
 <?php
-$pembayaran=query("SELECT * FROM pembayaran");
-//var_dump($pembayaran);die;
+$murid=query("SELECT * FROM murid");
+//var_dump($murid);die;
 if ( isset($_POST["submit"]) ) {
     //ambil data dari tiap elemen dalam form
     //cek keberhasilan
-    if( queryAddPembayaran($_POST) > 0){
+    if( queryAddMurid($_POST) > 0){
             echo "
                 <script>
                     alert('data berhasil ditambahkan!');
@@ -23,64 +23,74 @@ if ( isset($_POST["submit"]) ) {
     
 }
 
-?> 
+?>
 
 
 
 
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from kvthemes.com/bangodash/color-version/table-data-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 06 Jul 2019 23:52:54 GMT -->
+<head>
  <h4>Daftar Data Pembayaran Murid Fawwaaz Kiddy Club</h4>
-  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tampilModalTambah">
-        tambah Data
-        </button>
- <div class="row">
+    <!-- End Breadcrumb-->
+      <div class="row">
         <div class="col-lg-12">
           <div class="card">
-            <div class="card-header"><i class="fa fa-table"></i> Keseluruhan yang harus dibayar </div>
+            <div class="card-header"><i class="fa fa-table"></i> Data Murid</div>
             <div class="card-body">
               <div class="table-responsive">
               <table id="default-datatable" class="table table-bordered">
                 <thead>
-                <tr>
+                    <tr>
                     <th class="serial">No</th>
                     <th>ID</th>
-                    <th>Keterangan Pembayaran</th>
-                    <th>Kategori</th>
-                    <th>Jumlah Pembayaran</th>
+                    <th>Nama</th>
+                    <th>TTL</th>
+                    <th>Jenis Kelamin</th>
+                    <th>No Hp</th>
+                    <th>Jenjang kursus</th>
                     <th class="serial">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
                 $i=1;
-                foreach($pembayaran as $row): ?>
+                foreach($murid as $row): ?>
                 <tr>
                     <td class="serial"><?= $i?></td>
-                    <td><?= $row["id"];?></td>
-                    <td><?= $row["ket_pembayaran"];?></td>
-                    <td><?= $row["kategori"];?></td>
-                    <td><?= $row["jml_bayar"];?></td>
+                    <td><?= $row["id_murid"];?></td>
+                    <td><?= $row["nama"];?></td>
+                    <td><?= $row["tempat_lahir"];?>,<?= $row["tgl_lahir"];?></td>
+                    <td><?= $row["jk"];?></td>
+                    <td><?= $row["no_hp"];?></td>
+                    <td><?= $row["jenjang"];?>, mengikuti kelas <?= $row["kursus"];?></td>
+                    
                     <td>
-                        <a href="index.php?page=editAnggota&id_anggota=<?= $row["id"];?>">
-                            <button type="submit" class="btn btn-success btn-sm">edit</button>
-                        </a>
-
-                        <a href="function/hapus.php?id=<?= $row["id"];?>" onclick="return confirm('yakin mau menghapus data?')">
-                            <button class="btn btn-danger btn-sm">hapus</button>
-                        </a>
-                        <a href="index.php?page=tampilAnggota&id_anggota=<?= $row["id"];?>">
-                            <button type="submit" class="btn btn-primary btn-sm">kirim</button>
+                        <a href="index.php?page=formPembayaranDetail&id_murid=<?= $row["id_murid"];?>">
+                            <button type="submit" class="btn btn-primary btn-sm">detail</button>
                         </a>
                     </td>    
                 </tr>
                 <?php 
                 $i++;
                 endforeach;?>
-            </tbody>
+                    </tbody>
             </table>
             </div>
             </div>
           </div>
         </div>
       </div><!-- End Row-->
+    
+    </div>
+    <!-- End container-fluid-->
+    
+    </div><!--End content-wrapper-->
+   <!--Start Back To Top Button-->
+    
+</body>
 
-
+<!-- Mirrored from kvthemes.com/bangodash/color-version/table-data-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 06 Jul 2019 23:55:19 GMT -->
+</html>

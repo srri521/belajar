@@ -1,6 +1,5 @@
-
 <?php
-$id_murid=$_SESSION["id_murid"];
+$id_murid=$_GET["id_murid"];
 // if($_SESSION["login"]==0){
 //     echo "
 //     <script>
@@ -72,8 +71,6 @@ endforeach;
                         <tr>
                             <th>Total Pembayaran :</th>
                             <td colspan="3">Rp <?= $i-$u;?>,-</td>
-                            <th scope="row">Status:</th>
-                            <span class="badge badge-danger"><?= $transaksi["status"];?></span>
                         </tr>
                     </tbody>
                 </table>
@@ -83,9 +80,6 @@ endforeach;
 
 
 </div><br>
-
-
-
 
 <div class="row">
  <div class="col-lg-6">
@@ -104,6 +98,7 @@ endforeach;
                       <th scope="col">Kategori</th>
                       <th scope="col">Deadline</th>
                       <th scope="col">Pembayaran</th>
+                      <th scope="col" class="serial">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -116,7 +111,16 @@ endforeach;
                         <td><?= $row["ket_pembayaran"];?></td>
                         <td><?= $row["kategori"];?></td>
                         <td><?= $row["batas_bayar"];?></td>
-                        <td>Rp.<?= $row["jml_bayar"];?>,-</td>    
+                        <td>Rp.<?= $row["jml_bayar"];?>,-</td>
+                        <td>
+                            <a href="index.php?page=U_pembayaran&id_p=<?= $row["id_p"];?>">
+                                <button type="submit" class="btn btn-success btn-sm">edit</button>
+                            </a>
+
+                            <a href="" onclick="return confirm('yakin mau menghapus data?')">
+                                <button class="btn btn-danger btn-sm">hapus</button>
+                            </a>
+                        </td>    
                     </tr>
                     <?php 
                     $i++;
@@ -129,3 +133,87 @@ endforeach;
           </div>
         </div>
 
+
+    <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <strong class="card-title mb-3" id="add">Riwayat Transaksi</strong>
+                <a href="index.php?page=add&id_murid=<?= $id_murid;?>&tambah=1#add">
+                    <button type="submit" class="btn btn-warning btn-sm">tambah</button>
+                </a>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class="thead-light shadow-light">
+                    <tr>
+                      <th scope="col" class="serial">No</th>
+                      <th scope="col">Tanggal</th>
+                      <th scope="col">Pembayaran</th>
+                      <th scope="col">Bukti Bayar</th>
+                      <th scope="col">Status</th>
+                      <th scope="col" class="serial">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    $i=1;
+                    foreach($transaksi as $row):
+                    ?>
+                    <tr>
+                        <td class="serial"><?= $i?></td>
+                        <td><?= $row["tgl_bayar"];?></td>
+                        <td><?= $row["jml_bayar"];?></td>
+                        <td>
+                        <img src="dist/img/<?= $row["bkt_bayar"];?>" alt="" style="width:80px; height:auto;">
+                        </td>
+                        <td>
+                                <?php if($row["status"]=="belum dibayar"){?>
+                                    <span class="badge badge-danger"><?= $row["status"];?></span>
+                                <?php }else{?>
+                                    <span class="badge badge-primary"><?= $row["status"];?></span>
+                                <?php }?>
+                        </td>
+
+                        <td>
+                            <a href="index.php?page=formPembayaranDetail&bayar=<?= $row["id_t"];?>">
+                              <button type="submit" class="btn btn-info btn-sm">bayar</button>
+                            </a>
+                       
+                            <a href="">
+                                <button type="submit" class="btn btn-success btn-sm">edit</button>
+                            </a>
+
+                            <a href="" onclick="return confirm('yakin mau menghapus data?')">
+                                <button class="btn btn-danger btn-sm">hapus</button>
+                            </a>
+                        </td>    
+                    </tr>
+                    <?php 
+                    $i++;
+                    endforeach;
+                    ?>
+                </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+</div><!--End Row-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

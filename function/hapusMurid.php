@@ -1,12 +1,12 @@
 <?php
 require 'function.php';
 
-$id=$_GET["id"];
+$id_murid=$_GET["id_murid"];
 
-if(queryDeleteMurid($id)>0){
+if(queryDeleteMurid($id_murid)>0){
     ?>
     <script>
-        document.location.href='../index.php?page=formMurid&id=<?= $id;?>';
+        document.location.href='../index.php?page=formMurid&id_murid=<?= $id_murid;?>';
     </script>
     <?php
 }

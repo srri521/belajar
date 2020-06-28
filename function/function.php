@@ -121,7 +121,7 @@ function upload() {
 	 $namaFileBaru .= '.';
 	 $namaFileBaru .= $ekstensiGambar;
 
-	 move_uploaded_file($tmpName, '../dist/img/' . $namaFileBaru);
+	 move_uploaded_file($tmpName, 'dist/img/' . $namaFileBaru);
 	 return $namaFileBaru;
 
 
@@ -135,17 +135,30 @@ function queryAddPembayaran($data) {
 
 	// ambil data dari tiap elemen data form
 	$ket_pembayaran = htmlspecialchars($data["ket_pembayaran"]);
-	$kategori = htmlspecialchars($data["kategori"]);
-	$jml_bayar = htmlspecialchars($data["jml_bayar"]);
+    $kategori = htmlspecialchars($data["kategori"]);
+    $batas_bayar = htmlspecialchars($data["batas_bayar"]);
+    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
 	// query insert data
 	$query = "INSERT INTO pembayaran
 				VALUES 
-				('', '$ket_pembayaran', '$kategori', '$jml_bayar')
+				('', '$ket_pembayaran', '$kategori', '$batas_bayar', '$jml_bayar')
 				";
 	mysqli_query($conn, $query);
 
 
 	return mysqli_affected_rows($conn);
+}
+
+function bayar($data){
+    global $conn;
+    $id_t=$data["bayar"];
+    //query insert data
+    $query="UPDATE transaksi SET
+                status='lunas' 
+                WHERE id_t=$id_t
+                ";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
 }
 
 
@@ -165,10 +178,59 @@ function queryAddPembayaran($data) {
 
 
 
+function queryUpdateMurid($data){
+    global $conn;
+    $id_murid=$data["id_murid"];
+    $nama=htmlspecialchars($data["nama"]);
+    $tempat_lahir=htmlspecialchars($data["tempat_lahir"]);
+    $tgl_lahir=htmlspecialchars($data["tgl_lahir"]);
+    $jk=htmlspecialchars($data["jk"]);
+    $agama=htmlspecialchars($data["agama"]);
+    $nm_ayah=htmlspecialchars($data["nm_ayah"]);
+    $nm_ibu=htmlspecialchars($data["nm_ibu"]);
+    $pk_ayah=htmlspecialchars($data["pk_ayah"]);
+    $pk_ibu=htmlspecialchars($data["pk_ibu"]);
+    $alamat=htmlspecialchars($data["alamat"]);
+    $no_hp=htmlspecialchars($data["no_hp"]);
+    $jenjang=htmlspecialchars($data["jenjang"]);
+    $kursus=htmlspecialchars($data["kursus"]);
+    $catatan=htmlspecialchars($data["catatan"]);
+    $gambarLama=htmlspecialchars($data["gambarLama"]);
+    
+    //cek apakah gambar lama diupload apa tidak
+    
+    if($_FILES['photo']['error']===4){
+        $photo=$gambarLama;
+    }else{
+        $photo=upload();
+    }
 
 
+    //query insert data
+    $query="UPDATE murid SET
+                nama='$nama',
+                tempat_lahir='$tempat_lahir',
+                tgl_lahir='$tgl_lahir',
+                jk='$jk',
+                agama='$agama',
+                nm_ayah='$nm_ayah',
+                nm_ibu='$nm_ibu',
+                pk_ayah='$pk_ayah',
+                pk_ibu='$pk_ibu',
+                alamat='$alamat',
+                no_hp='$no_hp',
+                jenjang='$jenjang',
+                kursus='$kursus',
+                catatan='$catatan',
+                photo='$photo'
+                WHERE id_murid=$id_murid
+                ";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
 
-function editUser($data){
+
+function queryUpdateUser($data){
     global $conn;
     $id=$data["id"];
     $email=htmlspecialchars($data["email"]);
@@ -207,51 +269,75 @@ function editUser($data){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function queryDeleteMurid($id){
+function queryUpdatePembayaran($data) {
     global $conn;
-    mysqli_query($conn,"DELETE FROM murid WHERE id=$id");    
+
+    // ambil data dari tiap elemen data form
+    $id_p = htmlspecialchars($data["id_p"]);
+    $ket_pembayaran = htmlspecialchars($data["ket_pembayaran"]);
+    $kategori = htmlspecialchars($data["kategori"]);
+    $batas_bayar = htmlspecialchars($data["batas_bayar"]);
+    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
+    // query insert data
+        $query="UPDATE pembayaran SET
+                ket_pembayaran='$ket_pembayaran',
+                kategori='$kategori',
+                batas_bayar='$batas_bayar',
+                jml_bayar='$jml_bayar'
+                WHERE id_p=$id_p
+                ";
+    mysqli_query($conn, $query);
     return mysqli_affected_rows($conn);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function queryDeleteMurid($id_murid){
+    global $conn;
+    mysqli_query($conn,"DELETE FROM murid WHERE id_murid=$id_murid");    
+    return mysqli_affected_rows($conn);
+}
+
+function queryDeleteUser($id){
+    global $conn;
+    mysqli_query($conn,"DELETE FROM user WHERE id=$id");    
+    return mysqli_affected_rows($conn);
+}
 
 
 

@@ -1,5 +1,5 @@
 <?php 
-require '../function/function.php';
+
 
 if (isset($_POST["submit"])) {
 
@@ -29,23 +29,64 @@ if (isset($_POST["submit"])) {
   <title>Transaksi Pembayaran</title>
 </head>
 <body>
-  <h1>Transaksi Pembayaran</h1>
-
   <form action="" method="post" enctype="multipart/form-data">
+<div class="row">
+<div class="col-lg-6">
+ <h4 class="text-uppercase" style="text-align: center;">Transaksi Pembayaran Kursus</h4>
+</div>
+</div>
+     <hr>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <h4 class="form-header text-uppercase">
+                  <i class="fa fa-money"></i>
+                   Input Pembayaran
+                </h4>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="tgl_bayar">Tanggal Pembayaran</label>
+                   <input type="" id="tgl_bayar" readonly="readonly" class="form-control" value="<?= date('l, d-m-Y')?>">
+                  </div>
 
-    <ul>
-      <li>
-        <label for="bkt_bayar">Masukan Bukti Pembayaran :</label>
-        <input type="file" name="bkt_bayar" id="bkt_bayar" >
-      </li>
-      <li>
-        <label for="bkt_bayar">Masukan Bukti Pembayaran :</label>
-        <input type="file" name="bkt_bayar" id="bkt_bayar" >
-      </li>
-          <h5 >kirim dalam bentuk gambar</h5>
-      <button type="submit" name="submit">Kirim</button>
-    </ul>
-    
+                  <div class="form-group col-md-6">
+                    <label for="jml_bayar">Jumlah Pembayaran</label>
+                    <input type="number" class="form-control" id="jml_bayar">
+                  </div>
+                  <div class="form-group">
+                    <label for="bkt_bayar">Bukti Pembayaran</label>
+                    <input type="file" class="form-control" id="bkt_bayar">
+                    <small class="text-muted" >*kirim dalam bentuk gambar(png,jpg,jpeg)</small>
+                  </div>
+                  
+                <div class="form-footer">
+                  <button type="cancel" class="btn btn-dark shadow-dark m-1"><i class="fa fa-times"></i> Cancel</button>
+                  <button type="kirim" class="btn btn-success shadow-success m-1"><i class="fa fa-check-square-o"></i> Kirim</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   </form>
 </body>
