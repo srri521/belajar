@@ -68,7 +68,7 @@ if ( isset($_POST["submit"]) ) {
                     <td><?= $row["jenjang"];?>, mengikuti kelas <?= $row["kursus"];?></td>
                     
                     <td>
-                        <a href="index.php?page=formPembayaranDetail&id_murid=<?= $row["id_murid"];?>">
+                        <a href="index.php?page=form&id_murid=<?= $row["id_murid"];?>">
                             <button type="submit" class="btn btn-primary btn-sm">detail</button>
                         </a>
                     </td>    

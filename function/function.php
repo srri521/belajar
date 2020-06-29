@@ -78,62 +78,12 @@ $result=mysqli_query($conn, "SELECT email FROM user WHERE email='$email'");
 	return mysqli_affected_rows($conn);
 }
 
-function upload() {
-
-	$namaFile = $_FILES['photo']['name'];
-	$ukuranFile = $_FILES['photo']['size'];
-	$error = $_FILES['photo']['error'];
-	$tmpName = $_FILES['photo']['tmp_name'];
-
-	// cek apakah tidak ada gambar yang di upload
-	if ($error === 4) {
-		echo "
-			<script>
-			alert('pilih gambar terlebih dahulu'); </script>
-		";
-		return false;
-	}
-
-	//cek apakah yang di upload itu gambar atau bukan
-	$ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
-	$ekstensiGambar = explode('.', $namaFile);
-	$ekstensiGambar = strtolower(end($ekstensiGambar));
-	if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
-	 	echo "
-			<script>
-			alert('yang diupload bukan gambar'); </script>
-		";
-		return false;
-	 } 
-
-	 // cek jika ukurannya terlalu besar
-	 if ($ukuranFile > 1000000) {
-	 	echo "
-			<script>
-			alert('ukuran gambar terlalu besar!'); </script>
-		";
-		return false;
-	 }
-
-	 // lolos pengecekan gambar siap di upload
-	 // generate nama gambar baru
-	 $namaFileBaru = uniqid();
-	 $namaFileBaru .= '.';
-	 $namaFileBaru .= $ekstensiGambar;
-
-	 move_uploaded_file($tmpName, 'dist/img/' . $namaFileBaru);
-	 return $namaFileBaru;
-
-
-}
-
-
-
 
 function queryAddPembayaran($data) {
 	global $conn;
 
 	// ambil data dari tiap elemen data form
+    $id_murid = htmlspecialchars($data["id_murid"]);
 	$ket_pembayaran = htmlspecialchars($data["ket_pembayaran"]);
     $kategori = htmlspecialchars($data["kategori"]);
     $batas_bayar = htmlspecialchars($data["batas_bayar"]);
@@ -141,7 +91,7 @@ function queryAddPembayaran($data) {
 	// query insert data
 	$query = "INSERT INTO pembayaran
 				VALUES 
-				('', '$ket_pembayaran', '$kategori', '$batas_bayar', '$jml_bayar')
+				('', '$id_murid', '$ket_pembayaran', '$kategori', '$batas_bayar', '$jml_bayar')
 				";
 	mysqli_query($conn, $query);
 
@@ -162,6 +112,31 @@ function bayar($data){
 }
 
 
+function queryAddTransaksi($data) {
+    global $conn;
+
+    // ambil data dari tiap elemen data form
+    $id_p = htmlspecialchars($data["id_p"]);
+    $id = htmlspecialchars($data["id"]);
+    $tgl_bayar = htmlspecialchars($data["tgl_bayar"]);
+    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
+
+
+    // upload gambar
+    $bkt_bayar = uploadT();
+    if (!$bkt_bayar) {
+        return false;
+    }
+    // query insert data
+    $query = "INSERT INTO transaksi
+                VALUES 
+                ('', '$id_p', '$id', '$tgl_bayar', '$jml_bayar', '$bkt_bayar')
+                ";
+    mysqli_query($conn, $query);
+
+
+    return mysqli_affected_rows($conn);
+}
 
 
 
@@ -170,9 +145,104 @@ function bayar($data){
 
 
 
+function upload() {
+
+    $namaFile = $_FILES['photo']['name'];
+    $ukuranFile = $_FILES['photo']['size'];
+    $error = $_FILES['photo']['error'];
+    $tmpName = $_FILES['photo']['tmp_name'];
+
+    // cek apakah tidak ada gambar yang di upload
+    if ($error === 4) {
+        echo "
+            <script>
+            alert('pilih gambar terlebih dahulu'); </script>
+        ";
+        return false;
+    }
+
+    //cek apakah yang di upload itu gambar atau bukan
+    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiGambar = explode('.', $namaFile);
+    $ekstensiGambar = strtolower(end($ekstensiGambar));
+    if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+        echo "
+            <script>
+            alert('yang diupload bukan gambar'); </script>
+        ";
+        return false;
+     } 
+
+     // cek jika ukurannya terlalu besar
+     if ($ukuranFile > 1000000) {
+        echo "
+            <script>
+            alert('ukuran gambar terlalu besar!'); </script>
+        ";
+        return false;
+     }
+
+     // lolos pengecekan gambar siap di upload
+     // generate nama gambar baru
+     $namaFileBaru = uniqid();
+     $namaFileBaru .= '.';
+     $namaFileBaru .= $ekstensiGambar;
+
+     move_uploaded_file($tmpName, 'dist/img/' . $namaFileBaru);
+     return $namaFileBaru;
 
 
+}
 
+
+function uploadT() {
+
+    $namaFile = $_FILES['bkt_bayar']['name'];
+    $ukuranFile = $_FILES['bkt_bayar']['size'];
+    $error = $_FILES['bkt_bayar']['error'];
+    $tmpName = $_FILES['bkt_bayar']['tmp_name'];
+
+    // cek apakah tidak ada gambar yang di upload
+    if ($error === 4) {
+        echo "
+            <script>
+            alert('pilih gambar terlebih dahulu'); </script>
+        ";
+        return false;
+    }
+
+    //cek apakah yang di upload itu gambar atau bukan
+    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiGambar = explode('.', $namaFile);
+    $ekstensiGambar = strtolower(end($ekstensiGambar));
+    if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+        echo "
+            <script>
+            alert('yang diupload bukan gambar'); </script>
+        ";
+        return false;
+     } 
+
+     // cek jika ukurannya terlalu besar
+     if ($ukuranFile > 1000000) {
+        echo "
+            <script>
+            alert('ukuran gambar terlalu besar!'); </script>
+        ";
+        return false;
+     }
+
+     // lolos pengecekan gambar siap di upload
+     // generate nama gambar baru
+     $namaFileBaru = uniqid();
+     $namaFileBaru .= '.';
+     $namaFileBaru .= $ekstensiGambar;
+
+     move_uploaded_file($tmpName, 'dist/img/' . $namaFileBaru);
+     return $namaFileBaru;
+
+
+}
 
 
 
@@ -290,7 +360,37 @@ function queryUpdatePembayaran($data) {
     return mysqli_affected_rows($conn);
 }
 
+function queryUpdateTransaksi($data) {
+    global $conn;
 
+    // ambil data dari tiap elemen data form
+    $id_t = $data["id_t"];
+    $id_p = htmlspecialchars($data["id_p"]);
+    $id = htmlspecialchars($data["id"]);
+    $tgl_bayar = htmlspecialchars($data["tgl_bayar"]);
+    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
+    $gambar2=htmlspecialchars($data["gambar2"]);
+    $status = htmlspecialchars($data["status"]);
+    //cek apakah gambar lama diupload apa tidak
+    
+    if($_FILES['bkt_bayar']['error']===4){
+        $bkt_bayar=$gambar2;
+    }else{
+        $bkt_bayar=uploadT();
+    }
+    // query insert data
+        $query="UPDATE transaksi SET
+                id_p='$id_p',
+                id='$id',
+                tgl_bayar='$tgl_bayar',
+                jml_bayar='$jml_bayar',
+                bkt_bayar='$bkt_bayar',
+                status='$status'
+                WHERE id_t='$id_t'
+                ";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
 
 
 
@@ -339,6 +439,17 @@ function queryDeleteUser($id){
     return mysqli_affected_rows($conn);
 }
 
+function queryDeletePembayaran($id_p){
+    global $conn;
+    mysqli_query($conn,"DELETE FROM pembayaran WHERE id_p=$id_p");    
+    return mysqli_affected_rows($conn);
+}
+
+function queryDeleteTransaksi($id_t){
+    global $conn;
+    mysqli_query($conn,"DELETE FROM transaksi WHERE id_t=$id_t");    
+    return mysqli_affected_rows($conn);
+}
 
 
 

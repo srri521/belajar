@@ -69,6 +69,15 @@ if (isset($_POST["submit"])) {
             </div>
           </div>
         </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+</body>
+</html>
+
 
 
 
