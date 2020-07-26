@@ -1,4 +1,47 @@
+<?php
+session_start();
+require 'function/function.php';
 
+if(isset($_SESSION["masuk"])){
+    header("Location: index.php");
+    exit;
+}
+
+if(isset($_POST["login"])){
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    $result=mysqli_query($conn, "SELECT * FROM user WHERE username='$username'");
+
+    $user=query("SELECT * FROM user WHERE username='$username'")[0];
+    //cek username
+    if(mysqli_num_rows($result)===1){
+        //cek password
+        $row=mysqli_fetch_assoc($result);
+        if(password_verify($password,$row["password"]) ){
+            //set session
+            $_SESSION["id_user"] = $user["id_user"];
+            $_SESSION["username"]       = $user["username"];
+            $_SESSION["password"]       = $user["password"];
+            $_SESSION["role"]           = $user["role"];
+            $_SESSION["nama"]           = $user["nama"];
+            $_SESSION["photo"]          = $user["photo"];
+
+            $_SESSION["masuk"]=true;
+
+            if($user["role"]=="Admin"){
+                $_SESSION["login"] =1;
+                header("Location: index.php");
+            }else{
+                $_SESSION["login"] =0;
+            }
+            header("Location: index.php");
+            exit;
+        }
+    }
+    $error=true;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,11 +78,11 @@
 			</div>
 		 <div class="card-content p-2">
 		  <div class="card-title text-uppercase text-center pb-2">Sign In</div>
-		    <form>
+		    <form action="" method="post">
 			  <div class="form-group">
 			   <div class="position-relative has-icon-right">
-				  <label for="exampleInputUsername" class="sr-only">Username</label>
-				  <input type="text" id="exampleInputUsername" class="form-control form-control-rounded" placeholder="Username">
+				  <label for="username" class="sr-only">Username</label>
+				  <input type="text" id="username" class="form-control form-control-rounded" placeholder="xxxx@gmail.com" name="username">
 				  <div class="form-control-position">
 					  <i class="icon-user"></i>
 				  </div>
@@ -47,8 +90,8 @@
 			  </div>
 			  <div class="form-group">
 			   <div class="position-relative has-icon-right">
-				  <label for="exampleInputPassword" class="sr-only">Password</label>
-				  <input type="password" id="exampleInputPassword" class="form-control form-control-rounded" placeholder="Password">
+				  <label for="password" class="sr-only">Password</label>
+				  <input type="password" id="password" class="form-control form-control-rounded" placeholder="Password" name="password">
 				  <div class="form-control-position">
 					  <i class="icon-lock"></i>
 				  </div>
@@ -62,8 +105,8 @@
 			  </div>
 			 </div>
 			</div>
-				<a href="index.php?page=formDashboard">
-			 <button type="button" class="btn btn-primary btn-round btn-block waves-effect waves-light">Sign In</button>
+				<!-- <a href="index.php?page=formDashboard"> -->
+			 <button type="submit" class="btn btn-primary btn-round btn-block waves-effect waves-light" name="login">Sign In</button>
 			  <div class="text-center pt-3">
 				<hr>
 				<p class="text-muted">Do not have an account? <a href="registrasi.php"> Registration here</a></p>

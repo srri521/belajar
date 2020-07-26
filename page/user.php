@@ -1,6 +1,7 @@
+<?php 
 
-<?php
-$id_murid=$_SESSION["id_murid"];
+
+$id_user=$_SESSION["id_user"];
 // if($_SESSION["login"]==0){
 //     echo "
 //     <script>
@@ -9,123 +10,69 @@ $id_murid=$_SESSION["id_murid"];
 //     ";
 // }
 //query masasiswa berdasarkan id
-$murid=query("SELECT * FROM murid WHERE id_murid=$id_murid")[0];
-$pembayaran=query("SELECT * FROM pembayaran WHERE id_murid=$id_murid ORDER BY batas_bayar DESC");
-$transaksi=query("SELECT * FROM transaksi WHERE id=$id_murid ORDER BY tgl_bayar DESC");
+$user2=mysqli_query($conn, "SELECT * FROM user WHERE id_user=$id_user");
+$user= mysqli_fetch_array($user2);
+$pembayaran=mysqli_query($conn, "SELECT * FROM pembayaran WHERE id_user=$id_user ORDER BY batas_bayar DESC");
+// $pembayaran2= mysqli_fetch_array($pembayaran);
+// $pembayaran=query( "SELECT * FROM pembayaran WHERE id_user=$id_user ORDER BY batas_bayar DESC");
+// $transaksi=query("SELECT * FROM transaksi WHERE id_t=id_p ORDER BY tgl_bayar DESC");
 
-if(isset($_GET["bayar"])){
-    if(bayar($_GET)>0){
-        ?>
-            <script>
-                document.location.href='index.php?page=formPembayaranDetail';
-            </script>
-        <?php
-    }else{
-        echo "
-        <script>
-            document.location.href='index.php?page=formPembayaranDetail';
-        </script>
-    ";
-    }
-}
 
-$countPembayaran=query("SELECT * FROM pembayaran WHERE id_murid=$id_murid");
-$i=0;
-foreach($countPembayaran as $row):
-    $i+=$row["jml_bayar"];
-endforeach;
 
-$countTransaksi=query("SELECT * FROM transaksi WHERE id=$id_murid");
-$u=0;
-foreach($countTransaksi as $row):
-    $u+=$row["jml_bayar"];
-endforeach;
+
+
+
+// $countPembayaran=mysqli_query($conn, "SELECT * FROM pembayaran WHERE id_user=$id_user");
+// $i=0;
+// // foreach($countPembayaran as $row):
+//     $i+=$row["jml_bayar"];
+// // endforeach;
+
+// $countTransaksi=mysqli_query($conn, "SELECT * FROM transaksi WHERE id_t=id_p");
+// $u=0;
+//     $u+=$countTransaksi["jml_bayar"];
+
 
 ?>
 
+<h2 style="text-align: center;">Selamat Datang <?= $_SESSION["nama"]?></h2>
+<p style="text-align: center;">Selamat bergabung di Fawwaaz Kiddy Club</p>
+
 <div class="card">
+
     <div class="card-header">
-        <strong class="card-title mb-3">Penampilan Data Secara Rinci</strong>
+        <strong class="card-title mb-3"></strong>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-md-2">
-                <img src="dist/img/<?= $murid["photo"];?>" alt="" style="width:120px; height:auto;">
+                <h5>ID Pendaftaran : <?= $user["id_user"];?></h5>
+                <img src="dist/img/<?= $user["photo"];?>" alt="" style="width:120px; height:auto;">
             </div>
             <div class="col-md-10">
-                <table class="table" cellpadding="10" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th scope="row">ID :</th>
-                            <td scope="row"><?= $murid["id_murid"];?></td>
-                            <th scope="row">Nama Lengkap :</th>
-                            <td><?= $murid["nama"];?></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">Jenis Kursus :</th>
-                            <td><?= $murid["kursus"];?></td>
-                            <th scope="row">Jenjang Kursus :</th>
-                            <td><?= $murid["jenjang"];?></td>
-                        </tr>
-                        <tr>
-                            <th>Total Pembayaran :</th>
-                            <td colspan="3">Rp <?= $i-$u;?>,-</td>
-                            <th scope="row">Status:</th>
-                            <span class="badge badge-danger"><?= $transaksi["status"];?></span>
-                        </tr>
-                    </tbody>
-                </table>
+                <ul>
+                    <h6>Hal-hal yang perlu diperhatikan oleh murid dalam menggunakan Sistem Informasi Lembaga Bimbingan Belajar (SILBB):</h6>
+                    <li>Ketika anda berada di halaman ini maka anda sudah menyetujui segala ketentuan yang berada di Fawwaaz Kiddy Club</li>
+                    <li>Bagi murid yang sudah melakukan pendaftaran, silakan hubungi pihak lembaga untuk konfirmasi pendaftaran dengan menyebutkan ID Pendaftaran</li>
+                    <li>Untuk pembayaran silakan upload pada menu pembayaran</li>
+                    <li>Pembayaran akan diupdate setiap bulan pertama pada tanggal pendaftaran</li>
+                    <li>Status Pembayaran akan diupdate 24 jam dari waktu pembayaran</li>
+                    <li>Jika Status Pembayaran belum di update silakan <a href="https://wa.me/+6282113868479?text=Assalamu'alaikum warahmatullahi wabarakaatuh">Chat Via WhatsApp</a></li>                    
+                    <li>Layanan ini berlaku selama anda menjadi murid di Fawwaaz Kiddy Club</li>
+                    <li>Jangan lupa sebelum meninggalkan SILBB pastikan logout terlebih dahulu</li>
+                    <li>Untuk pembayaran kirim ke <i class="fa fa-bank"></i>No Rekening: 1234567890
+
+                    </li>
+                </ul>
             </div>    
         </div>
     </div>
 
 
 </div><br>
+<small>Untuk konfirmasi pendaftaran silakan klik
+    <a href="https://wa.me/+6282113868479?text=Assalamu'alaikum warahmatullahi wabarakaatuh">Chat Via WhatsApp</a>
+</small>
 
 
-
-
-<div class="row">
- <div class="col-lg-6">
-          <div class="card">
-            <div class="card-body">
-              <strong class="card-title mb-3" id="add">Riwayat Pembayaran</strong>
-                <a href="index.php?page=add&id_murid=<?= $id_murid;?>&tambah=1#add">
-                    <button type="submit" class="btn btn-primary btn-sm">tambah</button>
-                </a>
-              <div class="table-responsive">
-                <table class="table">
-                  <thead class="thead-light shadow-light">
-                    <tr>
-                      <th scope="col" class="serial">No</th>
-                      <th scope="col">Ket</th>
-                      <th scope="col">Kategori</th>
-                      <th scope="col">Deadline</th>
-                      <th scope="col">Pembayaran</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $i=1;
-                    foreach($pembayaran as $row):
-                    ?>
-                    <tr>
-                        <td class="serial"><?= $i?></td>
-                        <td><?= $row["ket_pembayaran"];?></td>
-                        <td><?= $row["kategori"];?></td>
-                        <td><?= $row["batas_bayar"];?></td>
-                        <td>Rp.<?= $row["jml_bayar"];?>,-</td>    
-                    </tr>
-                    <?php 
-                    $i++;
-                    endforeach;
-                    ?>
-                </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
 

@@ -1,12 +1,13 @@
 <?php
 require 'function.php';
 
-$id_murid=$_GET["id_murid"];
+$id_user=$_GET["id_user"];
 
-if(queryDeleteMurid($id_murid)>0){
+if(queryDeleteUser($id_user)>0){
     ?>
     <script>
-        document.location.href='../index.php?page=formMurid&id_murid=<?= $id_murid;?>';
+    	alert ('data murid berhasil duhapus!');
+        document.location.href='../index.php?page=formMurid&id_user=<?= $id_user;?>';
     </script>
     <?php
 }

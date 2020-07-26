@@ -15,7 +15,9 @@
                     <thead>
                         <tr>
                             <th class="serial">No</th>
-                            <th>Email</th>
+                            <th>Gambar</th>
+                            <th>Nama</th>
+                            <th>Username</th>
                             <th>Level</th>
                             <th class="serial">Aksi</th>
                         </tr>
@@ -27,10 +29,15 @@
                         ?>
                         <tr>
                             <td class="serial"><?= $i?></td>
-                            <td><?= $row["email"];?></td>
-                            <td><?= $row["role"];?></td>
                             <td>
-                                <a href="function/hapusUser.php?id=<?= $row["id"];?>" onclick="return confirm('yakin mau menghapus data?')">
+                            <img src="dist/img/<?= $row["photo"];?>" alt="" style="width:120px; height:auto;">
+                            </td>
+                            <td><?= $row["nama"];?></td>
+                            <td><?= $row["username"];?></td>
+                            <td><?= $row["role"];?></td>
+                            
+                            <td>
+                                <a href="function/hapusUser.php?id_user=<?= $row["id_user"];?>" onclick="return confirm('yakin mau menghapus data?')">
                                     <button class="btn btn-danger btn-sm">hapus</button>
                                 </a>
                             </td>    

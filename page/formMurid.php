@@ -1,5 +1,6 @@
 <?php
-$murid=query("SELECT * FROM murid");
+
+$user=mysqli_query($conn, "SELECT * FROM user WHERE role='User'");
 //var_dump($murid);die;
 if ( isset($_POST["submit"]) ) {
     //ambil data dari tiap elemen dalam form
@@ -30,9 +31,14 @@ if ( isset($_POST["submit"]) ) {
 
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="dist/mycss.css">
+    <!-- <link rel="stylesheet" href="dist/bootstrap.min.css"> -->
+</head>
 
 <!-- Mirrored from kvthemes.com/bangodash/color-version/table-data-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 06 Jul 2019 23:52:54 GMT -->
-<head>
+
  
     <!-- End Breadcrumb-->
       <div class="row">
@@ -56,7 +62,7 @@ if ( isset($_POST["submit"]) ) {
                 <tbody>
                     <?php
                 $i=1;
-                foreach($murid as $row): ?>
+                foreach($user as $row): ?>
                 <tr>
                     <td class="serial"><?= $i?></td>
                     <td><?= $row["nama"];?></td>
@@ -66,15 +72,17 @@ if ( isset($_POST["submit"]) ) {
                     <td><?= $row["jenjang"];?>, mengikuti kelas <?= $row["kursus"];?></td>
                     
                     <td>
-                        <a href="function/hapusMurid.php?id_murid=<?= $row["id_murid"];?>" onclick="return confirm('yakin mau menghapus data?')">
-                            <button class="btn btn-danger btn-sm">hapus</button>
-                        </a>
-                        <a href="index.php?page=editMurid&id_murid=<?= $row["id_murid"];?>">
-                            <button class="btn btn-success btn-sm">edit</button>
-                        </a>
-                        <a href="index.php?page=formMuridTampil&id_murid=<?= $row["id_murid"];?>">
+                        <a href="index.php?page=formMuridTampil&id_user=<?= $row["id_user"];?>">
                             <button type="submit" class="btn btn-primary btn-sm">detail</button>
                         </a>
+                        <a href="index.php?page=editMurid&id_user=<?= $row["id_user"];?>">
+                            <button class="btn btn-success btn-sm">edit</button>
+                        </a>
+                        <a href="function/hapusMurid.php?id_user=<?= $row["id_user"];?>" onclick="return confirm('yakin mau menghapus data?')">
+                            <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                        </a>
+                        
+                        
                     </td>    
                 </tr>
                 <?php 

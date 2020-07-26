@@ -5751,7 +5751,7 @@ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e73f7c', endCo
 	overflow: auto
 }
 .table-responsive>.table tr th, .table-responsive>.table tr td {
-	white-space: normal !important
+	white-space:nowrap;
 }
 }
 /*----- Morris Chart -----*/

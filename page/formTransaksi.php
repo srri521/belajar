@@ -1,102 +1,166 @@
-<?php 
+<?php
+$id_user= $_SESSION["id_user"];
+
+$transaksi1=mysqli_query($conn, "SELECT * FROM transaksi  
+    JOIN user on transaksi.id_user = user.id_user
+    JOIN pembayaran on transaksi.id_p = pembayaran.id_p
+    WHERE transaksi.id_user=$id_user AND status='Belum Lunas'
+
+    ");
+$transaksi2=mysqli_fetch_array($transaksi1);
+
+$user=mysqli_query($conn, "SELECT * FROM user WHERE id_user=$id_user");
 
 
-if (isset($_POST["submit"])) {
 
-  if (queryAddTransaksi($_POST) > 0) {
-    echo "
-      <script>
-      alert('data berhasil dikirim!');
-      
-      </script>
-    ";
-  } else {
-    echo "
-      <script>
-      alert('data gagal dikirim!');
-      
-      </script>
-    ";
-  }
 
-}
 ?>
 
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Transaksi Pembayaran</title>
-</head>
-<body>
-  <form action="" method="post" enctype="multipart/form-data">
-<div class="row">
-<div class="col-lg-6">
- <h4 class="text-uppercase" style="text-align: center;">Transaksi Pembayaran Kursus</h4>
-</div>
-</div>
-     <hr>
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="card">
-            <div class="card-body">
-              <form>
-                <h4 class="form-header text-uppercase">
-                  <i class="fa fa-money"></i>
-                   Input Pembayaran
-                </h4>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="tgl_bayar">Tanggal Pembayaran</label>
-                   <input type="" id="tgl_bayar" readonly="readonly" class="form-control" value="<?= date('l, d-m-Y')?>">
-                  </div>
 
-                  <div class="form-group col-md-6">
-                    <label for="jml_bayar">Jumlah Pembayaran</label>
-                    <input type="number" class="form-control" id="jml_bayar">
-                  </div>
-                  <div class="form-group">
-                    <label for="bkt_bayar">Bukti Pembayaran</label>
-                    <input type="file" class="form-control" id="bkt_bayar">
-                    <small class="text-muted" >*kirim dalam bentuk gambar(png,jpg,jpeg)</small>
-                  </div>
-                  
-                <div class="form-footer">
-                  <button type="cancel" class="btn btn-dark shadow-dark m-1"><i class="fa fa-times"></i> Cancel</button>
-                  <button type="kirim" class="btn btn-success shadow-success m-1"><i class="fa fa-check-square-o"></i> Kirim</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </form>
+<h4>Status Pembayaran Murid</h4>
+<br><br>
+
+<div class="card">
+
+    <div class="card-header">
+        <strong class="card-title mb-3">My Profile</strong>
     </div>
-  </div>
+    <div class="card-body">
+        <div class="row">
+            <?php foreach ($user as $row ) :
+                            # code...
+                       ?>
+            <div class="col-md-2">
+                <img src="dist/img/<?= $row["photo"];?>" alt="" style="width:120px; height:auto;">
+            </div>
+            <div class="col-md-10">
+                <table class="table" cellpadding="10" cellspacing="0">
+                    <thead>
+                        
+                        <tr>
+                            <th scope="row">ID Pendaftaran:</th>
+                            <td scope="row"><?= $row["id_user"];?></td>
+                            <th scope="row">Nama Lengkap :</th>
+                            <td><?= $row["nama"];?></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Jenis Kursus :</th>
+                            <td><?= $row["kursus"];?></td>
+                            <th scope="row">Jenjang Kursus :</th>
+                            <td><?= $row["jenjang"];?></td>
+                        </tr>
+                        
+                    </tbody>
+                    <?php  endforeach;  ?>
+                </table>
+            </div>    
+        </div>
+    </div>
+
+
+</div><br>
+
+<!-- kewajiban pembayaran -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h6>Kewajiban Pembayaran</h6>
+            </div>
+            <div class="table-stats order-table ov-h table-responsive">
+                <table class="table "> 
+                    <thead >
+                        <tr>
+                            <th>Nama</th>
+                            <th>Jenis Pembayaran</th>
+                            <th>Status</th>
+                            <th>Rupiah</th>
+                            <th class="serial">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td><?= $transaksi2["nama"];?></td>
+                            <td><?= $transaksi2["ket_pembayaran"];?>-> Kelas <?= $transaksi2["kategori"];?></td>
+                            <td>
+                                <?php if($transaksi2["status"]=="Belum Lunas"){?>
+                                    <span class="badge badge-danger"><?= $transaksi2["status"];?></span>
+                                <?php }else{?>
+                                    <span class="badge badge-primary"><?= $transaksi2["status"];?></span>
+                                <?php }?>
+                            </td> 
+                            <td>Rp<?= $transaksi2["jml_bayar"];?>,-</td>
+                            <td> 
+                                <a href="index.php?page=formTransaksiTambah&id_t=<?= $transaksi2["id_t"];?>">
+                                <button type="submit" class="btn btn-primary btn-sm">bayar sekarang</button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><br>
+    </div>
 </div>
+
+
+<?php 
+$trx1=query("SELECT * FROM transaksi  
+    JOIN user on transaksi.id_user = user.id_user
+    JOIN pembayaran on transaksi.id_p = pembayaran.id_p
+    WHERE transaksi.id_user=$id_user AND status='Lunas'
+
+    ");
+
+
+ ?>
+
+<!-- yang sudah dibayar -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h6>Yang Sudah Dibayar</h6>
+            </div>
+            <div class="table-stats order-table ov-h table-responsive">
+                <table class="table "> 
+                    <thead >
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Jenis Pembayaran</th>
+                            <th>Status</th>
+                            <th>Rupiah</th>
+                            
+                        </tr>
+                    </thead>
+                    <?php 
+                        foreach ($trx1 as $row ) :
+                             # code...
+                         ?>
+                    <tbody>
+                        
+                        
+                        <tr>
+                            <td><?= $row["tgl_bayar"];?></td>
+                            <td><?= $row["ket_pembayaran"];?>-> Kelas <?= $row["kategori"];?></td>
+                            <td>
+                                <?php if($row["status"]=="Belum Lunas"){?>
+                                    <span class="badge badge-danger"><?= $row["status"];?></span>
+                                <?php }else{?>
+                                    <span class="badge badge-primary"><?= $row["status"];?></span>
+                                <?php }?>
+                            </td> 
+                            <td>Rp<?= $row["bayar"];?>,-</td>
+                        </tr>
+
+                    </tbody>
+                <?php endforeach; ?>
+                </table>
+            </div>
+        </div><br>
+    </div>
 </div>
-</form>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </form>
-</body>
-</html>

@@ -1,3 +1,25 @@
+<?php
+
+// session_start();
+require 'function/function.php';
+if(isset($_POST["register"])){
+    if(register($_POST)>0){
+        echo "
+        <script>
+            document.location.href='login.php';
+        </script>
+    ";
+    
+    }else{
+        echo "
+        <script>
+        alert ('user baru gagal dibuat');
+        </script>
+        ";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,8 +56,9 @@
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <div class="form-row">
                         	<div class="form-group col-4">
-                                <div class=""><label for="email" class=" form-control-label">Email</label></div>
-                                <div class=""><input type="text" id="email" name="email" placeholder="masukan email" class="form-control form-control-rounded" autocomplete="off"></div>
+                                <div class=""><label for="username" class=" form-control-label">Username</label></div>
+                                <div class=""><input type="text" id="username" name="username" placeholder="masukan username" class="form-control form-control-rounded" autocomplete="off"></div>
+                                <small>contoh : fawwaz@gmail.com</small>
                             </div>
                             <div class="form-group col-4">
                                 <div class=""><label for="password" class=" form-control-label">Password</label></div>
@@ -57,7 +80,7 @@
                             </div>
                             <div class="form-group col-4">
                                 <div class=""><label for="tgl_lahir" class=" form-control-label">Tanggal Lahir</label></div>
-                                <div class=""><input type="date" id="tgl_lahir" name="tgl_lahir" placeholder="Masukkan Tanggal Lahir" class="form-control form-control-rounded"><small class="form-text text-muted">bulan-tanggal-tahun</small></div>
+                                <div class=""><input type="date" id="tgl_lahir" name="tgl_lahir" placeholder="Masukkan Tanggal Lahir" class="form-control form-control-rounded"><small class="form-text text-muted">tanggal-bulan-tahun</small></div>
                             </div>
 
                             <div class="form-group col-4">
@@ -121,7 +144,7 @@
 
                             <div class="form-group col-4">
                                 <div class=""><label for="kursus" class=" form-control-label">Jenis Kursus</label></div>
-                                <div class=""><input type="number" id="kursus" name="kursus" placeholder="jenis kursus yang diikuti" class="form-control form-control-rounded" autocomplete="off"></div>
+                                <div class=""><input type="text" id="kursus" name="kursus" placeholder="jenis kursus yang diikuti" class="form-control form-control-rounded" autocomplete="off"></div>
                             </div>
                             <div class="form-group col-12">
                                 <div class=""><label for="catatan" class=" form-control-label">Catatan</label></div>
@@ -131,9 +154,9 @@
 
                             <div class="row form-group col-12">
                                 <div class="col col-md-3"><label for="pboto" class=" form-control-label">Pas Photo 3x4</label></div>
-                                <div class="col-12 col-md-9"><input type="file" id="pboto" name="pboto" class="form-control-file form-control-sm"></div>
+                                <div class="col-12 col-md-9"><input type="file" id="pboto" name="photo" class="form-control-file form-control-sm"></div>
                             </div>
-                            <button class="btn btn-primary btn-block" name="register">Register</button>
+                            <button type="submit" class="btn btn-primary btn-block" name="register">Register</button>
                             
                         </div>
                         <small class=""> Sudah punya akun? <a href="login.php">login</a>.</small>

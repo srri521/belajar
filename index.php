@@ -1,8 +1,17 @@
 <?php
-require 'function/function.php';
+session_start();
+if(!isset($_SESSION["masuk"])){
+    header("Location: main.php");
+    exit;
+}
 
-$page = isset($_GET["page"]) ? $_GET["page"] : false;
+require 'function/function.php';
+$user=query("SELECT * FROM user")[0];
+
+        $page=isset($_GET["page"])?$_GET["page"]:false;
+    
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,16 +72,28 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <!-- User Account  -->
-                        <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="dist/img/u2.png" class="user-image" alt="User Image"> <span class="hidden-xs">Admin</span> </a>
+                        <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="dist/img/<?= $_SESSION["photo"];?>" class="user-image" alt="User Image"> <span class="hidden-xs"><?= $_SESSION["nama"]?></span> </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header">
-                                    <div class="pull-left user-img"><img src="dist/img/u2.png" class="img-responsive img-circle" alt="User"></div>
-                                    <p class="text-left">Admin <small>alexander@gmail.com</small> </p>
+                                    <div class="pull-left user-img"><img src="dist/img/<?= $_SESSION["photo"];?>" class="img-responsive img-circle" alt="User"></div>
+                                    <p class="text-left"><?= $_SESSION["nama"]?> <small><?= $_SESSION["username"]?></small> </p>
                                  </li>
-                                <li><a href="index.php?page=userEdit"><i class="icon-profile-male"></i> My Profile</a></li>
+                                 
+                                <!-- <li><a href="index.php?page=userEdit&id_user=<?= $_SESSION["id_user"];?>"><i class="icon-profile-male"></i> Change Password</a></li> -->
                                 <li role="separator" class="divider"></li>
-                                <li><a href="index.php?page=accountsetting"><i class="icon-gears"></i> Account Setting</a></li>
+                            <?php if ($_SESSION["login"]>=1) :?>
+
+                                <li><a href="index.php?page=accountsetting"><i class="icon-gears"></i> Pengelolaan User</a></li>
                                 <li role="separator" class="divider"></li>
+                            <?php endif; ?>
+
+                            <?php if ($_SESSION["login"]==0) :?>
+
+                                <li><a href="index.php?page=editMurid&id_user=<?= $_SESSION["id_user"];?>"><i class="icon-gears"></i> Edit Profile</a></li>
+                                <li role="separator" class="divider"></li>
+                            <?php endif; ?>
+
+
                                 <li><a href="logout.php"><i class="fa fa-power-off"></i> Logout</a></li>
                             </ul>
                         </li>
@@ -90,7 +111,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                 <div class="user-panel">
                     <div class="image text-center"><img src="dist/img/u2.png" class="img-circle" alt="User Image"> </div>
                     <div class="info">
-                        <p>Admin</p>
+                        <p><?= $_SESSION["role"]?></p>
                         <a href="#"><i class="fa fa-gear"></i></a> <a href="#"><i class="fa fa-power-off"></i></a>
                     </div>
                 </div>
@@ -98,13 +119,30 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                 <!-- sidebar menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">PERSONAL</li>
-
+                    <?php if ($_SESSION["login"]>0) :?>
                     <li > <a href="index.php?page=formDashboard"> <i class="icon-home"></i> <span>Dashboard</span> <span class="pull-right-container"></i> </span> </a>
                     </li>
+                
                     <li > <a href="index.php?page=formMurid"> <i class="icon-people icons"></i> <span>Pengelolaan Murid</span> <span class="pull-right-container"> </span> </a>
                     </li>
-                    <li > <a href="index.php?page=formPembayaran"> <i class="icon-book-open icons"></i> <span>Data Pembayaran</span> <span class="pull-right-container"> </i> </span> </a>
+
+                    <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Menu</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+                        <ul class="treeview-menu">
+                            <li > <a href="index.php?page=formPembayaran"> <i class="icon-book-open icons"></i> <span>Data Pembayaran</span> <span class="pull-right-container"> </i> </span> </a></li>
+                            <li > <a href="index.php?page=formKonfirmasi"> <i class="fa fa-money"></i> <span>Transaksi Pembayaran</span> <span class="pull-right-container"> </i> </span> </a></li>
+                        </ul>
                     </li>
+                    
+                <?php endif; ?>
+
+                <?php if ($_SESSION["login"]==0) :?>
+                    <li > <a href="index.php?page=user"> <i class="icon-home"></i> <span>Dashboard</span> <span class="pull-right-container"></i> </span> </a>
+                    </li>
+
+                    <li  > <a href="index.php?page=formTransaksi&id_user=<?= $_SESSION["id_user"];?>"> <i class="icon-book-open icons"></i> <span>Pembayaran</span> <span class="pull-right-container"> </i> </span> </a>
+                        </li>
+
+                <?php endif; ?>
                 </ul>
             </div>
             <!-- /.sidebar -->
@@ -113,14 +151,14 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header sty-one">
+            <!-- <div class="content-header sty-one">
                 <h1>Blank page</h1>
                 <ol class="breadcrumb">
                     <li><a href="#">Home</a></li>
                     <li><i class="fa fa-angle-right"></i> <a href="#">Pages</a></li>
                     <li><i class="fa fa-angle-right"></i> Blank page</li>
                 </ol>
-            </div>
+            </div> -->
 
             <!-- Main content -->
             <div class="content">
@@ -129,12 +167,27 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
                         <div class="card">
                             <div class="card-body">
                                 <?php
-                                $file = "page/$page.php";
-                                if (file_exists("$file")) {
-                                    include_once($file);
-                                } else {
-                                    echo "<h3>Halaman Belum dibuat</h3>";
-                                }
+                                    $file="page/$page.php";
+                                    if($page==""){
+                                        if ($_SESSION["login"]==0) {
+                                        ?>
+                                            <script>
+                                                document.location.href='index.php?page=user';
+                                            </script>
+                                        <?php
+                                        }else{
+                                        ?>
+                                            <script>
+                                                document.location.href='index.php?page=formDashboard';
+                                            </script>
+                                        <?php
+                                        }
+                                    }
+                                    if(file_exists("$file")){
+                                        include_once($file);
+                                    }else{
+                                        echo "<h3>Halaman Belum dibuat</h3>";
+                                    }
                                 ?>
                             </div>
                         </div>
@@ -159,6 +212,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : false;
     <!-- jQuery 3 -->
     <script src="dist/js/jquery.min.js"></script>
     <script src="dist/bootstrap/js/bootstrap.min.js"></script>
+    
 
     <!-- template -->
     <script src="dist/js/bizadmin.js"></script>

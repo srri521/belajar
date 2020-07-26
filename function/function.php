@@ -13,14 +13,67 @@ function query($query) {
 }
 
 
+function register($data){
+    global $conn;
 
+    $username =  strtolower(stripslashes( $data["username"]));
+    $password = mysqli_real_escape_string($conn, $data["password"]);
+    $password2 = mysqli_real_escape_string($conn, $data["password2"]);
+    $nama = htmlspecialchars($data["nama"]);
+    $tempat_lahir = htmlspecialchars($data["tempat_lahir"]);
+    $tgl_lahir = htmlspecialchars($data["tgl_lahir"]);
+    $jk = htmlspecialchars($data["jk"]);
+    $agama = htmlspecialchars($data["agama"]);
+    $nm_ayah = htmlspecialchars($data["nm_ayah"]);
+    $nm_ibu = htmlspecialchars($data["nm_ibu"]);
+    $pk_ayah = htmlspecialchars($data["pk_ayah"]);
+    $pk_ibu = htmlspecialchars($data["pk_ibu"]);
+    $alamat = htmlspecialchars($data["alamat"]);
+    $no_hp = htmlspecialchars($data["no_hp"]);
+    $jenjang = htmlspecialchars($data["jenjang"]);
+    $kursus = htmlspecialchars($data["kursus"]);
+    $catatan = htmlspecialchars($data["catatan"]);
+    
+
+    //cek apakah username telah tersedia atau tidak
+    $result=mysqli_query($conn, "SELECT username FROM user WHERE username='$username'");
+    if(mysqli_fetch_assoc($result)){
+        echo "<script>
+                alert('username yang dipilih sudah terdaftar');
+            </script>
+        ";
+        return false;
+    }
+    //cek konfirmasi password
+    if($password!==$password2){
+    echo "<script>
+            alert('password tidak sesuai');
+        </script>";
+        return false;   
+    }
+
+    //enkripsi password 
+    $password= password_hash($password,PASSWORD_DEFAULT);
+    //upload gambar
+    $photo =upload();
+    if(!$photo){
+        return false;
+    }
+
+    //query insert data
+    $query="INSERT INTO user VALUES
+            ('','$username','$password', 'user','$nama', '$tempat_lahir', '$tgl_lahir', '$jk', '$agama', '$nm_ayah', '$nm_ibu', '$pk_ayah', '$pk_ibu', '$alamat', '$no_hp', '$jenjang', '$kursus', '$catatan', '$photo')
+                ";
+     mysqli_query($conn,$query);
+    return mysqli_affected_rows($conn);
+}
 
 function queryAddMurid($data) {
 	global $conn;
 
 
 	// ambil data dari tiap elemen data form
-	$email = htmlspecialchars($data["email"]);
+	$username = htmlspecialchars($data["username"]);
 	$password = htmlspecialchars($data["password"]);
 
 	$nama = htmlspecialchars($data["nama"]);
@@ -39,7 +92,7 @@ function queryAddMurid($data) {
 	$catatan = htmlspecialchars($data["catatan"]);
 	// $photo = htmlspecialchars($data["photo"]);
 
-$result=mysqli_query($conn, "SELECT email FROM user WHERE email='$email'");
+$result=mysqli_query($conn, "SELECT user FROM user WHERE username='$username'");
     if(mysqli_fetch_assoc($result)){
         echo "<script>
                 alert('email yang dipilih sudah terdaftar');
@@ -65,16 +118,11 @@ $result=mysqli_query($conn, "SELECT email FROM user WHERE email='$email'");
 	}
 
 	// query insert data
-	$query2="INSERT INTO user VALUES
-            ('','$email','$password')
-            ";
             
-	$query = "INSERT INTO murid
-				VALUES 
-				('', '$nama', '$tempat_lahir', '$tgl_lahir', '$jk', '$agama', '$nm_ayah', '$nm_ibu', '$pk_ayah', '$pk_ibu', '$alamat', '$no_hp', '$jenjang', '$kursus', '$catatan', '$photo')
-				";
+	$query="INSERT INTO user VALUES
+            ('','username', 'password' 'user','$nama', '$tempat_lahir', '$tgl_lahir', '$jk', '$agama', '$nm_ayah', '$nm_ibu', '$pk_ayah', '$pk_ibu', '$alamat', '$no_hp', '$jenjang', '$kursus', '$catatan', '$photo')
+                ";
 	mysqli_query($conn, $query);
-    mysqli_query($conn,$query2);
 	return mysqli_affected_rows($conn);
 }
 
@@ -83,15 +131,13 @@ function queryAddPembayaran($data) {
 	global $conn;
 
 	// ambil data dari tiap elemen data form
-    $id_murid = htmlspecialchars($data["id_murid"]);
 	$ket_pembayaran = htmlspecialchars($data["ket_pembayaran"]);
     $kategori = htmlspecialchars($data["kategori"]);
-    $batas_bayar = htmlspecialchars($data["batas_bayar"]);
     $jml_bayar = htmlspecialchars($data["jml_bayar"]);
 	// query insert data
 	$query = "INSERT INTO pembayaran
 				VALUES 
-				('', '$id_murid', '$ket_pembayaran', '$kategori', '$batas_bayar', '$jml_bayar')
+				('', '$ket_pembayaran', '$kategori', '$jml_bayar')
 				";
 	mysqli_query($conn, $query);
 
@@ -104,7 +150,7 @@ function bayar($data){
     $id_t=$data["bayar"];
     //query insert data
     $query="UPDATE transaksi SET
-                status='lunas' 
+                status='Lunas' 
                 WHERE id_t=$id_t
                 ";
     mysqli_query($conn, $query);
@@ -117,27 +163,45 @@ function queryAddTransaksi($data) {
 
     // ambil data dari tiap elemen data form
     $id_p = htmlspecialchars($data["id_p"]);
-    $id = htmlspecialchars($data["id"]);
-    $tgl_bayar = htmlspecialchars($data["tgl_bayar"]);
-    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
+    $id_user = htmlspecialchars($data["id_user"]);
 
-
-    // upload gambar
-    $bkt_bayar = uploadT();
-    if (!$bkt_bayar) {
-        return false;
-    }
     // query insert data
     $query = "INSERT INTO transaksi
                 VALUES 
-                ('', '$id_p', '$id', '$tgl_bayar', '$jml_bayar', '$bkt_bayar')
+                ('', '$id_p', '$id_user','','','','Belum Lunas')
                 ";
     mysqli_query($conn, $query);
-
 
     return mysqli_affected_rows($conn);
 }
 
+
+function quueryAddTransaksiById($data) {
+    global $conn;
+    
+    $id_t=$data["id_t"];
+    $tgl_bayar = htmlspecialchars($data["tgl_bayar"]);
+    $bayar = htmlspecialchars($data["bayar"]);
+    
+
+    $bkt_bayar = uploadT();
+    if (!$bkt_bayar) {
+        return false;
+    }
+
+
+    // query insert data
+    $query="UPDATE transaksi SET
+                tgl_bayar='$tgl_bayar',
+                bayar='$bayar',
+                bkt_bayar='$bkt_bayar' 
+                WHERE id_t=$id_t
+                ";
+    
+    mysqli_query($conn, $query);
+    
+    return mysqli_affected_rows($conn);
+}
 
 
 
@@ -195,6 +259,137 @@ function upload() {
 }
 
 
+
+
+
+function queryUpdateMurid($data){
+    global $conn;
+    $id_user=$data["id_user"];
+    $nama=htmlspecialchars($data["nama"]);
+    $tempat_lahir=htmlspecialchars($data["tempat_lahir"]);
+    $tgl_lahir=htmlspecialchars($data["tgl_lahir"]);
+    $jk=htmlspecialchars($data["jk"]);
+    $agama=htmlspecialchars($data["agama"]);
+    $nm_ayah=htmlspecialchars($data["nm_ayah"]);
+    $nm_ibu=htmlspecialchars($data["nm_ibu"]);
+    $pk_ayah=htmlspecialchars($data["pk_ayah"]);
+    $pk_ibu=htmlspecialchars($data["pk_ibu"]);
+    $alamat=htmlspecialchars($data["alamat"]);
+    $no_hp=htmlspecialchars($data["no_hp"]);
+    $jenjang=htmlspecialchars($data["jenjang"]);
+    $kursus=htmlspecialchars($data["kursus"]);
+    $catatan=htmlspecialchars($data["catatan"]);
+    $gambarLama=htmlspecialchars($data["gambarLama"]);
+    
+    //cek apakah gambar lama diupload apa tidak
+    
+    if($_FILES['photo']['error']===4){
+        $photo=$gambarLama;
+    }else{
+        $photo=upload();
+    }
+
+
+    //query insert data
+    $query="UPDATE user SET
+                nama='$nama',
+                tempat_lahir='$tempat_lahir',
+                tgl_lahir='$tgl_lahir',
+                jk='$jk',
+                agama='$agama',
+                nm_ayah='$nm_ayah',
+                nm_ibu='$nm_ibu',
+                pk_ayah='$pk_ayah',
+                pk_ibu='$pk_ibu',
+                alamat='$alamat',
+                no_hp='$no_hp',
+                jenjang='$jenjang',
+                kursus='$kursus',
+                catatan='$catatan',
+                photo='$photo'
+                WHERE id_user=$id_user
+                ";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
+
+function queryUpdateUser($data){
+    global $conn;
+    $id_user=$data["id_user"];
+    $username=htmlspecialchars($data["username"]);
+    $password=htmlspecialchars($data["password"]);
+    $password2=htmlspecialchars($data["password2"]);
+
+    $result=mysqli_query($conn, "SELECT * FROM user WHERE id_user='$id_user'");
+    if(mysqli_num_rows($result)===1)
+    {
+         //query insert data
+        $row=mysqli_fetch_assoc($result);
+        
+        if(password_verify($password,$row["password"]) ){
+            $password2= password_hash($password2,PASSWORD_DEFAULT);
+            $query="UPDATE user SET
+            username='$username',
+            password='$password2'
+            
+            WHERE id_user=$id_user
+            ";
+            
+            mysqli_query($conn, $query);
+        }
+
+    }else{
+        echo "
+        <script>
+            alert('Password lama yang anda masukan salah');
+        </script>
+        ";
+    }
+
+    
+    return mysqli_affected_rows($conn);
+}
+
+
+function queryUpdatePembayaran($data) {
+    global $conn;
+
+    // ambil data dari tiap elemen data form
+    $id_p = $data["id_p"];
+    $ket_pembayaran = htmlspecialchars($data["ket_pembayaran"]);
+    $kategori = htmlspecialchars($data["kategori"]);
+    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
+    // query insert data
+        $query="UPDATE pembayaran SET
+                ket_pembayaran='$ket_pembayaran',
+                kategori='$kategori',
+                jml_bayar='$jml_bayar'
+                WHERE id_p=$id_p
+                ";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
+function queryUpdateTransaksi($data) {
+    global $conn;
+
+    // ambil data dari tiap elemen data form
+    $id_t = $data["id_t"];
+    $status = htmlspecialchars($data["status"]);
+    //cek apakah gambar lama diupload apa tidak
+    
+    
+    // query insert data
+        $query="UPDATE transaksi SET
+                status='$status'
+                WHERE id_t=$id_t
+                ";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
+
 function uploadT() {
 
     $namaFile = $_FILES['bkt_bayar']['name'];
@@ -212,7 +407,7 @@ function uploadT() {
     }
 
     //cek apakah yang di upload itu gambar atau bukan
-    $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiGambarValid = ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'];
     $ekstensiGambar = explode('.', $namaFile);
     $ekstensiGambar = strtolower(end($ekstensiGambar));
     if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
@@ -248,194 +443,39 @@ function uploadT() {
 
 
 
-function queryUpdateMurid($data){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function queryDeleteUser($id_user){
     global $conn;
-    $id_murid=$data["id_murid"];
-    $nama=htmlspecialchars($data["nama"]);
-    $tempat_lahir=htmlspecialchars($data["tempat_lahir"]);
-    $tgl_lahir=htmlspecialchars($data["tgl_lahir"]);
-    $jk=htmlspecialchars($data["jk"]);
-    $agama=htmlspecialchars($data["agama"]);
-    $nm_ayah=htmlspecialchars($data["nm_ayah"]);
-    $nm_ibu=htmlspecialchars($data["nm_ibu"]);
-    $pk_ayah=htmlspecialchars($data["pk_ayah"]);
-    $pk_ibu=htmlspecialchars($data["pk_ibu"]);
-    $alamat=htmlspecialchars($data["alamat"]);
-    $no_hp=htmlspecialchars($data["no_hp"]);
-    $jenjang=htmlspecialchars($data["jenjang"]);
-    $kursus=htmlspecialchars($data["kursus"]);
-    $catatan=htmlspecialchars($data["catatan"]);
-    $gambarLama=htmlspecialchars($data["gambarLama"]);
-    
-    //cek apakah gambar lama diupload apa tidak
-    
-    if($_FILES['photo']['error']===4){
-        $photo=$gambarLama;
-    }else{
-        $photo=upload();
-    }
-
-
-    //query insert data
-    $query="UPDATE murid SET
-                nama='$nama',
-                tempat_lahir='$tempat_lahir',
-                tgl_lahir='$tgl_lahir',
-                jk='$jk',
-                agama='$agama',
-                nm_ayah='$nm_ayah',
-                nm_ibu='$nm_ibu',
-                pk_ayah='$pk_ayah',
-                pk_ibu='$pk_ibu',
-                alamat='$alamat',
-                no_hp='$no_hp',
-                jenjang='$jenjang',
-                kursus='$kursus',
-                catatan='$catatan',
-                photo='$photo'
-                WHERE id_murid=$id_murid
-                ";
-    mysqli_query($conn, $query);
-    return mysqli_affected_rows($conn);
-}
-
-
-function queryUpdateUser($data){
-    global $conn;
-    $id=$data["id"];
-    $email=htmlspecialchars($data["email"]);
-    $password=htmlspecialchars($data["password"]);
-    $password2=htmlspecialchars($data["password2"]);
-    $role=htmlspecialchars($data["role"]);
-
-    $result=mysqli_query($conn, "SELECT * FROM user WHERE id='$id'");
-    if(mysqli_num_rows($result)===1)
-    {
-         //query insert data
-        $row=mysqli_fetch_assoc($result);
-        
-        if(password_verify($password,$row["password"]) ){
-            $password2= password_hash($password2,PASSWORD_DEFAULT);
-            $query="UPDATE user SET
-            email='$email',
-            password='$password2',
-            role='$role',
-            WHERE id=$id
-            ";
-            
-            mysqli_query($conn, $query);
-        }
-
-    }else{
-        echo "
-        <script>
-            alert('Password lama yang anda masukan salah');
-        </script>
-        ";
-    }
-
-    
-    return mysqli_affected_rows($conn);
-}
-
-
-function queryUpdatePembayaran($data) {
-    global $conn;
-
-    // ambil data dari tiap elemen data form
-    $id_p = htmlspecialchars($data["id_p"]);
-    $ket_pembayaran = htmlspecialchars($data["ket_pembayaran"]);
-    $kategori = htmlspecialchars($data["kategori"]);
-    $batas_bayar = htmlspecialchars($data["batas_bayar"]);
-    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
-    // query insert data
-        $query="UPDATE pembayaran SET
-                ket_pembayaran='$ket_pembayaran',
-                kategori='$kategori',
-                batas_bayar='$batas_bayar',
-                jml_bayar='$jml_bayar'
-                WHERE id_p=$id_p
-                ";
-    mysqli_query($conn, $query);
-    return mysqli_affected_rows($conn);
-}
-
-function queryUpdateTransaksi($data) {
-    global $conn;
-
-    // ambil data dari tiap elemen data form
-    $id_t = $data["id_t"];
-    $id_p = htmlspecialchars($data["id_p"]);
-    $id = htmlspecialchars($data["id"]);
-    $tgl_bayar = htmlspecialchars($data["tgl_bayar"]);
-    $jml_bayar = htmlspecialchars($data["jml_bayar"]);
-    $gambar2=htmlspecialchars($data["gambar2"]);
-    $status = htmlspecialchars($data["status"]);
-    //cek apakah gambar lama diupload apa tidak
-    
-    if($_FILES['bkt_bayar']['error']===4){
-        $bkt_bayar=$gambar2;
-    }else{
-        $bkt_bayar=uploadT();
-    }
-    // query insert data
-        $query="UPDATE transaksi SET
-                id_p='$id_p',
-                id='$id',
-                tgl_bayar='$tgl_bayar',
-                jml_bayar='$jml_bayar',
-                bkt_bayar='$bkt_bayar',
-                status='$status'
-                WHERE id_t='$id_t'
-                ";
-    mysqli_query($conn, $query);
-    return mysqli_affected_rows($conn);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function queryDeleteMurid($id_murid){
-    global $conn;
-    mysqli_query($conn,"DELETE FROM murid WHERE id_murid=$id_murid");    
-    return mysqli_affected_rows($conn);
-}
-
-function queryDeleteUser($id){
-    global $conn;
-    mysqli_query($conn,"DELETE FROM user WHERE id=$id");    
+    mysqli_query($conn,"DELETE FROM user WHERE id_user=$id_user");    
     return mysqli_affected_rows($conn);
 }
 

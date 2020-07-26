@@ -1,12 +1,14 @@
 <?php
- // $id=$_GET["id"];
+
+
+ $id_user=$_SESSION["id_user"];
     // $user=query("SELECT murid.nama, user.id, user.email, user.password, user.role, murid.photo, murid.id
     // FROM murid,user
     // WHERE murid.id=user.id;");
 
     // $murid=query("SELECT * FROM murid");
     //query masasiswa berdasarkan id
-    $user2=query("SELECT * FROM user WHERE id=$id")[0];
+    $user2=query("SELECT * FROM user WHERE id_user=$id_user")[0];
     // //edit
     if(isset($_POST["editUser"])){
         //mengecek apakah data telah diubah atau tidak
@@ -34,11 +36,12 @@
     <div class="card card-primary card-authentication1 mx-auto my-5 animated bounceInDown">
         <div class="card-body">
          <div class="card-content p-2">
-          <div class="card-title text-uppercase text-center pb-2">Update Profil</div>
+          <div class="card-title text-uppercase text-center pb-2">Change Password</div>
             <form>
               <div class="form-group">
-                        <div class=""><label for="email" class=" form-control-label">Email</label></div>
-                        <div class=""><input type="text" id="email" name="email" placeholder="masukan email" class="form-control form-control-sm" autocomplete="off" value="<?= $user2["email"];?>"></div>
+                 <input type="hidden" name="id_user" value="<?= $user2["id_user"];?>">
+                        <div class=""><label for="username" class=" form-control-label">Email</label></div>
+                        <div class=""><input type="text" id="username" name="username" placeholder="masukan email" class="form-control form-control-sm" autocomplete="off" value="<?= $user2["username"];?>"></div>
                     </div>
                     <div class="form-group">
                         <div class=""><label for="password" class=" form-control-label">Password Lama</label></div>
@@ -55,7 +58,7 @@
                             </button>
                         </a>
                         <a href="">
-                            <button type="reset" class="btn btn-success btn-sm"><i class="fa fa-ban"></i> Close</button>
+                            <button type="reset" class="btn btn-success btn-sm"><i class="fa fa-ban"></i> Reset</button>
                         </a>
                     </td>
              </form>
