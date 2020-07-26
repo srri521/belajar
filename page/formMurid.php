@@ -47,8 +47,8 @@ if ( isset($_POST["submit"]) ) {
             <div class="card-header"><i class="fa fa-table"></i> Data Murid</div>
             <div class="card-body">
               <div class="table-responsive">
-              <table id="default-datatable" class="table table-bordered">
-                <thead>
+              <table id="default-datatable" class="dataTable table-bordered">
+                <thead class="sorting">
                     <tr>
                     <th class="serial">No</th>
                     <th>Nama</th>
@@ -103,6 +103,7 @@ if ( isset($_POST["submit"]) ) {
    <!--Start Back To Top Button-->
     
 </body>
+
 
 <!-- Mirrored from kvthemes.com/bangodash/color-version/table-data-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 06 Jul 2019 23:55:19 GMT -->
 </html>

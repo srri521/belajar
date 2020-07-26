@@ -57,7 +57,7 @@
                   </div>
                   
                 <div class="form-footer">
-                  <button type="cancel" class="btn btn-dark shadow-dark m-1"><i class="fa fa-times"></i> Cancel</button>
+                  <button type="reset" class="btn btn-dark shadow-dark m-1"><i class="fa fa-times"></i> Reset</button>
                   <button type="submit" class="btn btn-success shadow-success m-1" name="uploadG"><i class="fa fa-check-square-o" ></i> Kirim</button>
                 </div>
             </div>

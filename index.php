@@ -32,6 +32,8 @@ $user=query("SELECT * FROM user")[0];
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="16x16" href="dist/img/favicon-16x16.png">
+    <!-- data table -->
+    <link rel="stylesheet" href="dist/plugins/datatables/css/dataTables.bootstrap.min.css">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
@@ -112,7 +114,7 @@ $user=query("SELECT * FROM user")[0];
                     <div class="image text-center"><img src="dist/img/u2.png" class="img-circle" alt="User Image"> </div>
                     <div class="info">
                         <p><?= $_SESSION["role"]?></p>
-                        <a href="#"><i class="fa fa-gear"></i></a> <a href="#"><i class="fa fa-power-off"></i></a>
+                        <a href="#"><i class="fa fa-gear"></i></a> <a href="logout.php"><i class="fa fa-power-off"></i></a>
                     </div>
                 </div>
 
@@ -219,6 +221,9 @@ $user=query("SELECT * FROM user")[0];
 
     <!-- for demo purposes -->
     <script src="dist/js/demo.js"></script>
+
+     <script src="dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
+     <script src="dist/plugins/datatables/jquery.dataTables.min.js"></script>
 </body>
 
 <!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-blank.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 09 May 2019 00:06:57 GMT -->
